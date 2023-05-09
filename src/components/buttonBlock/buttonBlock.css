@@ -1,0 +1,28 @@
+.all-btn {
+  font-weight: 500;
+  font-size: 12px;
+  width: 121px;
+  height: 33px;
+  border: none;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+.main-btn {
+  background-color: #1f1f1f;
+  color: #ffffff;
+}
+
+.secondary-btn {
+  background-color: #dfdfdf;
+  color: #000000;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-set-variables-wrapper {
+  text-align: center;
+}

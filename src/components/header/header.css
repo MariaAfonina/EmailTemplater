@@ -1,0 +1,13 @@
+.header {
+  padding-left: 27px;
+  display: flex;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.main-title {
+  font-weight: 300;
+  font-size: 18px;
+  color: #000000;
+  margin: 30px 0px 26px 26px;
+}
