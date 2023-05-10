@@ -31,9 +31,18 @@ const EmailForm = ({ isComposeEmailForm }) => {
     useEmailContext.setComposeEmailValue(inputValue);
   };
 
+  // eslint-disable-next-line no-unused-vars
+  const [finalEmailValues, setFinalEmailValues] = useState(
+    useEmailContext.previewAndSendFormValue || defaultInputValue
+  );
+
   return (
     <div className="email-form-wrapper">
-      <h2 className="titles">Compose Email Template</h2>
+      {isComposeEmailForm ? (
+        <h2 className="titles">Compose Email Template</h2>
+      ) : (
+        <h2 className="titles">Preview and Send</h2>
+      )}
 
       {isComposeEmailForm ? (
         <form>
@@ -75,7 +84,7 @@ const EmailForm = ({ isComposeEmailForm }) => {
           <Input
             fieldName="recipient"
             name="Recipients"
-            value={inputValue.recipient}
+            value={finalEmailValues.recipient}
             setValue={updateInputField}
             placeholder="{recipient}"
           />
@@ -83,7 +92,7 @@ const EmailForm = ({ isComposeEmailForm }) => {
           <Input
             fieldName="subject"
             name="Subject"
-            value={inputValue.subject}
+            value={finalEmailValues.subject}
             setValue={updateInputField}
             placeholder="{subject}"
           />
@@ -91,7 +100,7 @@ const EmailForm = ({ isComposeEmailForm }) => {
           <Textarea
             fieldName="emailBody"
             name="Body"
-            value={inputValue.emailBody}
+            value={finalEmailValues.emailBody}
             setValue={updateInputField}
             placeholder="Hi {name}, 
           We'd like to invite you to a {subject} on {date} at {location}.

@@ -2,7 +2,8 @@ import { useContext, useState } from "react";
 import { EmailContext } from "../../App";
 import ButtonBlock from "../Buttons/ButtonBlock";
 import Input from "../FormElements/Input";
-import convertPrefilledEmailValuesToVariable from "../../utils/convertValue";
+import convertPrefilledEmailValuesToVariable from "../../utils/convertPrefilledEmailValuesToVariable";
+import findInputsCustomValues from "../../utils/findInputsCustomValues";
 import "./FormSetValues.css";
 
 const FormSetValues = () => {
@@ -10,8 +11,9 @@ const FormSetValues = () => {
 
   const prefilledEmailValues = Object.values(
     useEmailContext.composeEmailValue
-  ).join("");
+  ).join("#");
 
+  // eslint-disable-next-line no-unused-vars
   const [emailVariables, setEmailVariables] = useState(
     convertPrefilledEmailValuesToVariable(prefilledEmailValues)
   );
@@ -30,53 +32,25 @@ const FormSetValues = () => {
     });
   }
 
-  function updateEmailFormFields() {
-    let emailFormValues = useEmailContext.composeEmailValue; //{recipient: '{hello}', subject: '{Hello2}', emailBody: '{Hello3}'}
-
-    // const setterToEmailFormValues = useEmailContext.setComposeEmailValue; // function
-
-    const emailKeys = Object.keys(emailFormValues); // (3) ['recipient', 'subject', 'emailBody']
-
-    for (let i = 0; i < emailKeys.length; i++) {
-      let valueFromKey = emailFormValues[emailKeys[i]]; // '{hello}' , '{Hello2}', '{Hello3} Hello'
-
-      let result = "";
-      let wordKey = "";
-
-      for (let x = 0; x < valueFromKey.length; x++) {
-        if (valueFromKey[x] === "{") {
-          result = result + wordKey;
-          wordKey = "";
-          for (let y = x; y < valueFromKey.length; y++) {
-            wordKey = wordKey + valueFromKey[y];
-            if (valueFromKey[y] === "}") {
-              setInputValuesInSetValuesForm({
-                ...inputValuesInSetValuesForm,
-                [wordKey]: emailVariables[wordKey],
-              });
-              wordKey = inputValuesInSetValuesForm[wordKey];
-              result = result + wordKey;
-              // wordKey = "";
-              x = y;
-            }
-            break;
-          }
-        }
-        wordKey = wordKey + valueFromKey[x];
-
-        // console.log(wordKey);
-        // console.log(result);
-        // else {
-        //   valueFromKey = result;
-        //   result = "";
-        //   emailFormValues = {
-        //     ...emailFormValues,
-        //     [emailKeys[i]]: result,
-        //   };
-        // }
-      }
+  function changeCompletedValues() {
+    let updateValues = prefilledEmailValues.replace(
+      emailVariables[0],
+      inputValuesInSetValuesForm[emailVariables[0]]
+    );
+    for (let i = 0; i < emailVariables.length; i++) {
+      updateValues = updateValues.replace(
+        emailVariables[i],
+        inputValuesInSetValuesForm[emailVariables[i]]
+      );
     }
-    // setterToEmailFormValues(emailFormValues);
+    const resultValuesArray = updateValues.split("#");
+    const setterPreviewAndSendFormValue =
+      useEmailContext.setPreviewAndSendFormValue;
+    setterPreviewAndSendFormValue({
+      recipient: resultValuesArray[0],
+      subject: resultValuesArray[1],
+      emailBody: resultValuesArray[2],
+    });
   }
 
   return (
@@ -103,11 +77,19 @@ const FormSetValues = () => {
           <ButtonBlock
             label="PREVIEW"
             className="primary-btn"
-            onClick={useEmailContext.handleNext}
+            onClick={(e) => {
+              useEmailContext.handleNext(e);
+              findInputsCustomValues(
+                useEmailContext.composeEmailValue,
+                setInputValuesInSetValuesForm,
+                inputValuesInSetValuesForm,
+                emailVariables
+              );
+              changeCompletedValues();
+            }}
           />
         </div>
       </form>
-      <button onClick={updateEmailFormFields}>Paka</button> {/* testButton */}
     </div>
   );
 };

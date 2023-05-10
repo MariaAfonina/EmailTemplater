@@ -25,8 +25,7 @@ const App = () => {
   // eslint-disable-next-line no-unused-vars
   const [isComposeEmailForm, setIsComposeEmailForm] = useState(true);
   const [composeEmailValue, setComposeEmailValue] = useState();
-
-  console.log(composeEmailValue);
+  const [previewAndSendFormValue, setPreviewAndSendFormValue] = useState();
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -54,6 +53,8 @@ const App = () => {
       value={{
         composeEmailValue,
         setComposeEmailValue,
+        previewAndSendFormValue,
+        setPreviewAndSendFormValue,
         handleBack,
         handleNext,
       }}
