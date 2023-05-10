@@ -1,18 +1,19 @@
-import ButtonBlock from "../buttonBlock/ButtonBlock";
-import "./emailForm.css";
-import { useContext, useState } from "react";
+import { useContext, useState, useMemo } from "react";
 import { EmailContext } from "../../App";
-import Input from "../input/Input";
-import { useMemo } from "react";
+import ButtonBlock from "../Buttons/ButtonBlock";
+import Input from "../FormElements/Input";
+import DobleButton from "../Buttons/DobleButton";
+import Textarea from "../FormElements/Textarea";
+import "./EmailForm.css";
 
-const EmailForm = () => {
+const EmailForm = ({ isComposeEmailForm }) => {
   const useEmailContext = useContext(EmailContext);
 
   const defaultInputValue = useMemo(
     () => ({
       recipient: "",
       subject: "",
-      textarea: "",
+      emailBody: "",
     }),
     []
   );
@@ -25,69 +26,80 @@ const EmailForm = () => {
     setInputValue({ ...inputValue, [fieldName]: value });
   }
 
+  const onClick = (e) => {
+    useEmailContext.handleNext(e);
+    useEmailContext.setComposeEmailValue(inputValue);
+  };
+
   return (
     <div className="email-form-wrapper">
       <h2 className="titles">Compose Email Template</h2>
-      <form>
-        <Input
-          valueName="recipient"
-          classNameLabel="recipient-label"
-          name="Recipients"
-          value={inputValue.recipient}
-          setValue={updateInputField}
-          placeholder="{recipient}"
-        />
 
-        <Input
-          valueName="subject"
-          classNameLabel="subject-label"
-          name="Subject"
-          value={inputValue.subject}
-          setValue={updateInputField}
-          placeholder="{subject}"
-        />
-
-        <div className="form-parameter">
-          <label className="form-label textarea-label" htmlFor="textarea">
-            Body
-          </label>
-          <textarea
-            id="textarea"
-            type="text"
-            value={inputValue.textarea}
-            onChange={(e) => updateInputField("textarea", e.target.value)}
-            className="textarea-block"
-            placeholder="Hi {name}, 
-            We'd like to invite you to a {subject} on {date} at {location}.
-            Thanks,{signature}"
+      {isComposeEmailForm ? (
+        <form>
+          <Input
+            fieldName="recipient"
+            name="Recipients"
+            value={inputValue.recipient}
+            setValue={updateInputField}
+            placeholder="{recipient}"
           />
-        </div>
-        {useEmailContext.isComposeEmailForm && (
+
+          <Input
+            fieldName="subject"
+            name="Subject"
+            value={inputValue.subject}
+            setValue={updateInputField}
+            placeholder="{subject}"
+          />
+
+          <Textarea
+            fieldName="emailBody"
+            name="Body"
+            value={inputValue.emailBody}
+            setValue={updateInputField}
+            placeholder="Hi {name}, 
+          We'd like to invite you to a {subject} on {date} at {location}.
+          Thanks,{signature}"
+          />
           <div className="btn-set-variables-wrapper">
             <ButtonBlock
-              btnName="SET VARIABLES"
-              btnClassName="main-btn"
-              onClick={(e) => {
-                useEmailContext.handleNext(e);
-                useEmailContext.setComposeEmailValue(inputValue);
-              }}
+              label="SET VARIABLES"
+              className="primary-btn"
+              onClick={onClick}
             />
           </div>
-        )}
-        {useEmailContext.isPreviewForm && (
-          <div className="btn-wrapper">
-            <ButtonBlock
-              btnName="BACK"
-              btnClassName="secondary-btn"
-              onClick={(e) => {
-                useEmailContext.handleBack(e);
-                useEmailContext.setComposeEmailValue(inputValue);
-              }}
-            />
-            <ButtonBlock btnName="SEND" btnClassName="main-btn" />
-          </div>
-        )}
-      </form>
+        </form>
+      ) : (
+        <form>
+          <Input
+            fieldName="recipient"
+            name="Recipients"
+            value={inputValue.recipient}
+            setValue={updateInputField}
+            placeholder="{recipient}"
+          />
+
+          <Input
+            fieldName="subject"
+            name="Subject"
+            value={inputValue.subject}
+            setValue={updateInputField}
+            placeholder="{subject}"
+          />
+
+          <Textarea
+            fieldName="emailBody"
+            name="Body"
+            value={inputValue.emailBody}
+            setValue={updateInputField}
+            placeholder="Hi {name}, 
+          We'd like to invite you to a {subject} on {date} at {location}.
+          Thanks,{signature}"
+          />
+          <DobleButton inputValue={inputValue} />
+        </form>
+      )}
     </div>
   );
 };

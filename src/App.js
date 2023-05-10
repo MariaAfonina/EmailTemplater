@@ -1,12 +1,18 @@
-import Header from "./components/header/Header";
-import EmailForm from "./components/emailForm/EmailForm";
-import FormSetValues from "./components/formSetValues/FormSetValues";
-import Stepper from "./components/stepper/Stepper";
-import { useState, createContext, useMemo } from "react";
+import { useState, createContext } from "react";
+import Header from "./components/Header/Header";
+import Stepper from "./components/Stepper/Stepper";
+import EmailForm from "./components/EmailForm/EmailForm";
+import FormSetValues from "./components/FormSetValues/FormSetValues";
 
 export const EmailContext = createContext();
 
-const steps = ["Compose Email Template", "Set Values", "Preview & Send"];
+const STEPS = ["Compose Email Template", "Set Values", "Preview & Send"];
+
+const MAP_STEP_INDEX_TO_COMPONENT = {
+  1: <EmailForm isComposeEmailForm />,
+  2: <FormSetValues />,
+  3: <EmailForm />,
+};
 
 const App = () => {
   const [activeStep, setActiveStep] = useState(1);
@@ -15,64 +21,37 @@ const App = () => {
     2: "inactive",
     3: "inactive",
   });
+
+  // eslint-disable-next-line no-unused-vars
   const [isComposeEmailForm, setIsComposeEmailForm] = useState(true);
-  const [isFormSetValues, setIsFormSetValues] = useState(false);
-  const [isPreviewForm, setIsPreviewForm] = useState(false);
   const [composeEmailValue, setComposeEmailValue] = useState();
 
-  const mapStatusToForm = useMemo(
-    () => ({
-      1: isComposeEmailForm,
-      2: isFormSetValues,
-      3: isPreviewForm,
-    }),
-    [isComposeEmailForm, isFormSetValues, isPreviewForm]
-  );
-
-  const mapSetterToForm = useMemo(
-    () => ({
-      1: setIsComposeEmailForm,
-      2: setIsFormSetValues,
-      3: setIsPreviewForm,
-    }),
-    []
-  );
-
-  const totalSteps = () => {
-    return steps.length;
-  };
-
-  const isLastStep = () => {
-    return activeStep === totalSteps();
-  };
+  console.log(composeEmailValue);
 
   const handleNext = (e) => {
     e.preventDefault();
-    const newActiveStep = isLastStep() ? 1 : activeStep + 1;
-    handleComplete(newActiveStep);
+    const newActiveStep = activeStep + 1;
+    handleStepChange(newActiveStep);
   };
 
   const handleBack = (e) => {
     e.preventDefault();
-    const newActiveStep = !isLastStep() ? 1 : activeStep - 1;
-    handleComplete(newActiveStep);
+    const newActiveStep = activeStep - 1;
+    handleStepChange(newActiveStep);
   };
 
-  const handleComplete = (newActiveStep) => {
-    const newCompleted = stepsStatus;
-    newCompleted[activeStep] = "inactive";
-    setStepsStatus(newCompleted);
-    mapSetterToForm[activeStep](!mapStatusToForm[activeStep]);
-    newCompleted[newActiveStep] = "active";
+  const handleStepChange = (newActiveStep) => {
+    setStepsStatus({
+      ...stepsStatus,
+      [activeStep]: "inactive",
+      [newActiveStep]: "active",
+    });
     setActiveStep(newActiveStep);
-    mapSetterToForm[newActiveStep](!mapStatusToForm[newActiveStep]);
   };
 
   return (
     <EmailContext.Provider
       value={{
-        isComposeEmailForm,
-        isPreviewForm,
         composeEmailValue,
         setComposeEmailValue,
         handleBack,
@@ -82,10 +61,8 @@ const App = () => {
       <div>
         <Header />
         <main className="main-container">
-          <Stepper steps={steps} stepsStatus={stepsStatus} />
-          {isComposeEmailForm && <EmailForm />}
-          {isFormSetValues && <FormSetValues />}
-          {isPreviewForm && <EmailForm />}
+          <Stepper steps={STEPS} stepsStatus={stepsStatus} />
+          {MAP_STEP_INDEX_TO_COMPONENT[activeStep]}
         </main>
       </div>
     </EmailContext.Provider>

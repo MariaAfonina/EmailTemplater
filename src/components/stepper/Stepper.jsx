@@ -1,5 +1,5 @@
-import "./stepper.css";
 import Step from "./Step";
+import "./Stepper.css";
 
 const Stepper = ({ steps, stepsStatus }) => {
   return (

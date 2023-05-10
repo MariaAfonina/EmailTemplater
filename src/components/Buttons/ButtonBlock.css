@@ -8,7 +8,7 @@
   margin-top: 30px;
 }
 
-.main-btn {
+.primary-btn {
   background-color: #1f1f1f;
   color: #ffffff;
 }
@@ -21,8 +21,4 @@
 .btn-wrapper {
   display: flex;
   justify-content: space-between;
-}
-
-.btn-set-variables-wrapper {
-  text-align: center;
 }

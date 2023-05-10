@@ -2,18 +2,6 @@
   width: 40%;
 }
 
-.textarea-label {
-  margin-top: 8px;
-  margin-bottom: 9px;
-}
-
-.textarea-block {
-  font-family: "Roboto";
-  font-weight: 400;
-  font-size: 12px;
-  color: #000000;
-  border: 1px solid #e0e3e7;
-  padding-left: 8px;
-  height: 214px;
-  padding-top: 10px;
+.btn-set-variables-wrapper {
+  text-align: center;
 }
