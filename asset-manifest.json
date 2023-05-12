@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/EmailTemplater/static/css/main.cff49007.css",
+    "main.js": "/EmailTemplater/static/js/main.3da23fd7.js",
+    "index.html": "/EmailTemplater/index.html",
+    "main.cff49007.css.map": "/EmailTemplater/static/css/main.cff49007.css.map",
+    "main.3da23fd7.js.map": "/EmailTemplater/static/js/main.3da23fd7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cff49007.css",
+    "static/js/main.3da23fd7.js"
+  ]
+}
