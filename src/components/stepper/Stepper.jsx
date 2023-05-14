@@ -3,7 +3,7 @@ import "./Stepper.css";
 
 const Stepper = ({ steps, stepsStatus }) => {
   return (
-    <div className="stepper-container">
+    <ul className="stepper-container">
       {steps.map((label, index) => (
         <Step
           key={index + 1}
@@ -12,7 +12,7 @@ const Stepper = ({ steps, stepsStatus }) => {
           num={index + 1}
         />
       ))}
-    </div>
+    </ul>
   );
 };
 

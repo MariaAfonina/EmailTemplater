@@ -1,22 +1,19 @@
 import { useContext, useState } from "react";
 import { EmailContext } from "../../App";
-import ButtonBlock from "../Buttons/ButtonBlock";
+import DoubleButton from "../Buttons/DoubleButton";
 import Input from "../FormElements/Input";
 import convertPrefilledEmailValuesToVariable from "../../utils/convertPrefilledEmailValuesToVariable";
-import findInputsCustomValues from "../../utils/findInputsCustomValues";
 import "./FormSetValues.css";
 
-const FormSetValues = () => {
+const FormSetValues = ({ isSetValuesForm }) => {
   const useEmailContext = useContext(EmailContext);
 
   const prefilledEmailValues = Object.values(
     useEmailContext.composeEmailValue
   ).join("#");
 
-  // eslint-disable-next-line no-unused-vars
-  const [emailVariables, setEmailVariables] = useState(
-    convertPrefilledEmailValuesToVariable(prefilledEmailValues)
-  );
+  const emailVariables =
+    convertPrefilledEmailValuesToVariable(prefilledEmailValues);
 
   const [inputValuesInSetValuesForm, setInputValuesInSetValuesForm] = useState(
     emailVariables.reduce(
@@ -68,27 +65,13 @@ const FormSetValues = () => {
             />
           ))}
         </div>
-        <div className="btn-wrapper">
-          <ButtonBlock
-            label="BACK"
-            className="secondary-btn"
-            onClick={useEmailContext.handleBack}
-          />
-          <ButtonBlock
-            label="PREVIEW"
-            className="primary-btn"
-            onClick={(e) => {
-              useEmailContext.handleNext(e);
-              findInputsCustomValues(
-                useEmailContext.composeEmailValue,
-                setInputValuesInSetValuesForm,
-                inputValuesInSetValuesForm,
-                emailVariables
-              );
-              changeCompletedValues();
-            }}
-          />
-        </div>
+        <DoubleButton
+          isSetValuesForm={isSetValuesForm}
+          changeCompletedValues={changeCompletedValues}
+          inputValuesInSetValuesForm={inputValuesInSetValuesForm}
+          emailVariables={emailVariables}
+          setInputValuesInSetValuesForm={setInputValuesInSetValuesForm}
+        />
       </form>
     </div>
   );

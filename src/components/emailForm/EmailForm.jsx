@@ -1,8 +1,8 @@
 import { useContext, useState, useMemo } from "react";
 import { EmailContext } from "../../App";
-import ButtonBlock from "../Buttons/ButtonBlock";
+import Button from "../Buttons/Button";
 import Input from "../FormElements/Input";
-import DobleButton from "../Buttons/DobleButton";
+import DoubleButton from "../Buttons/DoubleButton";
 import Textarea from "../FormElements/Textarea";
 import "./EmailForm.css";
 
@@ -31,10 +31,8 @@ const EmailForm = ({ isComposeEmailForm }) => {
     useEmailContext.setComposeEmailValue(inputValue);
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const [finalEmailValues, setFinalEmailValues] = useState(
-    useEmailContext.previewAndSendFormValue || defaultInputValue
-  );
+  const finalEmailValues =
+    useEmailContext.previewAndSendFormValue || defaultInputValue;
 
   return (
     <div className="email-form-wrapper">
@@ -72,7 +70,7 @@ const EmailForm = ({ isComposeEmailForm }) => {
           Thanks,{signature}"
           />
           <div className="btn-set-variables-wrapper">
-            <ButtonBlock
+            <Button
               label="SET VARIABLES"
               className="primary-btn"
               onClick={onClick}
@@ -103,10 +101,10 @@ const EmailForm = ({ isComposeEmailForm }) => {
             value={finalEmailValues.emailBody}
             setValue={updateInputField}
             placeholder="Hi {name}, 
-          We'd like to invite you to a {subject} on {date} at {location}.
-          Thanks,{signature}"
+            We'd like to invite you to a {subject} on {date} at {location}.
+            Thanks,{signature}"
           />
-          <DobleButton inputValue={inputValue} />
+          <DoubleButton inputValue={inputValue} />
         </form>
       )}
     </div>

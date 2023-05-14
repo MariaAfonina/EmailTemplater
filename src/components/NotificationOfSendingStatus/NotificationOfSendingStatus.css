@@ -1,0 +1,28 @@
+.notification {
+  position: absolute;
+  top: 77px;
+  right: 0px;
+  display: flex;
+  font-weight: 400;
+  font-size: 12px;
+  color: #000000;
+  width: 292px;
+  background: #ffffff;
+  border: 1px solid #e6e8ec;
+  border-left: none;
+  align-items: center;
+  margin: 47px 67px 0px 0px;
+}
+
+.notification::before {
+  content: "";
+  margin-right: 9px;
+  width: 9px;
+  height: 38px;
+  background-color: #7fee7d;
+}
+
+.fa-solid {
+  position: absolute;
+  right: 12px;
+}
